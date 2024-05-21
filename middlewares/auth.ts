@@ -1,3 +1,4 @@
+import ApiError from "@helpers/apiError";
 import { NextFunction, Request, Response } from "express";
 
 const BASIC_USER = process.env.BASIC_USER;
@@ -14,7 +15,12 @@ export default function AuthMiddleware(
 
   const authToken = `Basic ${encoded}`;
 
-  console.log(authToken, request.headers.authorization);
+  if (authToken !== request.headers.authorization) {
+    throw new ApiError(
+      401,
+      "You don't have access to request this endpoint! Try with correct header authroization.",
+    );
+  }
 
   next();
 }
