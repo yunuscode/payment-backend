@@ -6,3 +6,29 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Invoice {
+  id           String              @id @default(uuid())
+  type         String              @default("payme") @db.VarChar(255)
+  created_at   DateTime            @default(now())
+  status       String              @default("created") @db.VarChar(255)
+  updated_at   DateTime            @updatedAt
+  transactions PaymeTransactions[]
+
+  @@map("invoices")
+}
+
+model PaymeTransactions {
+  id           String  @id @default(uuid())
+  create_time  BigInt
+  perform_time BigInt? @default(0)
+  cancel_time  BigInt? @default(0)
+  transaction  String  @default(uuid())
+  state        Int     @default(1)
+  reason       String?
+
+  invoiceId String  @map("invoice_id")
+  invoice   Invoice @relation(fields: [invoiceId], references: [id])
+
+  @@map("payme_transactions")
+}

@@ -3,7 +3,13 @@
     "target": "es2016",
     "module": "commonjs",
     "baseUrl": "./",
-    "paths": {},
+    "paths": {
+      "@helpers/*": ["helpers/*"],
+      "@prisma/*": ["prisma/*"],
+      "@controllers/*": ["controllers/*"],
+      "@middlewares/*": ["middlewares/*"],
+      "@routes/*": ["routes/*"]
+    },
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true

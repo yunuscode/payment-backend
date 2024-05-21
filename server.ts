@@ -1,9 +1,13 @@
-require("dotenv").config();
-const express = require("express");
+import "dotenv/config.js";
+
+import * as express from "express";
 const app = express();
 
-const logger = require("./helpers/logger");
+import logger from "@helpers/logger";
+import indexRoute from "@routes/index";
 
 const PORT = process.env.PORT;
 
 app.listen(PORT, () => logger("SERVER", "App started at", PORT));
+
+app.use("/", indexRoute);
