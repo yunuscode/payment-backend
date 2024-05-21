@@ -4,7 +4,9 @@ import prisma from "@prisma/index";
 export async function paymeGateway(request: Request, response: Response) {
   const authorization = request.headers["authorization"];
 
-  if (authorization !== "") {
+  console.log(authorization !== process.env.PAYME_HEADER, authorization);
+
+  if (authorization !== process.env.PAYME_HEADER) {
     return response
       .status(200)
       .json(createError(-32504, "You don't have access to send request"));
@@ -31,7 +33,6 @@ export async function paymeGateway(request: Request, response: Response) {
     });
 
     if (!invoice) {
-      console.log("Invoice not found");
       return response.status(200).json(createError(-31050, "Order not found"));
     }
 
@@ -40,13 +41,7 @@ export async function paymeGateway(request: Request, response: Response) {
       return response.status(200).json(createError(-31050, "Order not found"));
     }
 
-    if (Math.ceil((invoice.amount / 100) * 15) * 100 !== amount) {
-      console.log(
-        "Amount is not equal",
-        amount,
-        invoice.amount,
-        Math.ceil((invoice.amount / 100) * 15) * 100,
-      );
+    if (invoice.amount * 100 !== amount) {
       return response.status(200).json(createError(-31001, "Order not found"));
     }
 
@@ -77,22 +72,17 @@ export async function paymeGateway(request: Request, response: Response) {
     });
 
     if (!invoice) {
-      console.log("Booking not found");
       return response.status(200).json(createError(-31050, "Order not found"));
     }
 
-    if (
-      invoice.status !== "created" ||
-      Math.ceil((invoice.amount / 100) * 15) * 100 !== amount
-    ) {
-      console.log(
-        "Booking is not waiting payment",
-        invoice.status,
-        amount,
-        invoice.amount,
-        Math.ceil((invoice.amount / 100) * 15) * 100,
-      );
+    if (invoice.status !== "created") {
       return response.status(200).json(createError(-31050, "Order not found"));
+    }
+
+    if (invoice.amount * 100 !== amount) {
+      return response
+        .status(200)
+        .json(createError(-31001, "Price doesn't match"));
     }
 
     const transactionId = request.body.params.id;
