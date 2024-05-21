@@ -6,7 +6,7 @@ const BASIC_PASSWORD = process.env.BASIC_PASSWORD;
 
 export default function AuthMiddleware(
   request: Request,
-  response: Response,
+  _response: Response,
   next: NextFunction,
 ) {
   const encoded = Buffer.from(`${BASIC_USER}:${BASIC_PASSWORD}`).toString(

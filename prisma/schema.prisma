@@ -12,6 +12,7 @@ model Invoice {
   type         String              @default("payme")
   created_at   DateTime            @default(now())
   status       String              @default("created")
+  amount       Int
   updated_at   DateTime            @updatedAt
   transactions PaymeTransactions[]
 

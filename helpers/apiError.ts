@@ -28,7 +28,7 @@ export default ApiError;
 export const errorConverter: ErrorRequestHandler = (err, req, res, next) => {
   let error = err;
 
-  console.log(error.message + "");
+  console.log(error);
 
   if (!(error instanceof ApiError)) {
     const statusCode =

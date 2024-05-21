@@ -11,4 +11,10 @@ invoiceRoute.get(
   catchAsync(InvoiceController.getInvoiceById),
 );
 
+invoiceRoute.post(
+  "/",
+  AuthMiddleware,
+  catchAsync(InvoiceController.createInvoice),
+);
+
 export default invoiceRoute;

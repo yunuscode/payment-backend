@@ -27,3 +27,31 @@ export async function getInvoiceById(request: Request, response: Response) {
     data: invoice,
   });
 }
+
+export async function createInvoice(request: Request, response: Response) {
+  const data = Validations.createInvoiceValidation.validate(request.body);
+
+  if (data.error) {
+    throw new ApiError(400, "Bad request: Params invalid");
+  }
+
+  const { provider, amount } = data.value;
+
+  const invoice = await prisma.invoice.create({
+    data: {
+      type: provider,
+      amount: amount,
+    },
+  });
+
+  const PAYME_URL = "https://payme.uz";
+
+  return response.status(201).json({
+    ok: true,
+    data: {
+      invoice_id: invoice.id,
+      amount: invoice.amount,
+      payme_url: PAYME_URL,
+    },
+  });
+}

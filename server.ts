@@ -8,6 +8,8 @@ import indexRoute from "@routes/index";
 
 const PORT = process.env.PORT;
 
+app.use(express.json());
+
 app.listen(PORT, () => logger("SERVER", "App started at", PORT));
 
 app.use("/", indexRoute);
