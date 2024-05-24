@@ -15,10 +15,12 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "http-status": "^1.7.4",
-    "joi": "^17.13.1"
+    "joi": "^17.13.1",
+    "md5": "^2.3.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
+    "@types/md5": "^2.3.5",
     "@types/node": "^20.12.12",
     "prisma": "^5.14.0",
     "ts-node": "^10.9.2",

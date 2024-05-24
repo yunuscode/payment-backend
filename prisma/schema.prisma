@@ -8,13 +8,14 @@ datasource db {
 }
 
 model Invoice {
-  id           String              @id @default(uuid()) @map("_id")
-  type         String              @default("payme")
-  created_at   DateTime            @default(now())
-  status       String              @default("created")
-  amount       Int
-  updated_at   DateTime            @updatedAt
-  transactions PaymeTransactions[]
+  id                 String              @id @default(uuid()) @map("_id")
+  type               String              @default("payme")
+  created_at         DateTime            @default(now())
+  status             String              @default("created")
+  amount             Int
+  updated_at         DateTime            @updatedAt
+  transactions       PaymeTransactions[]
+  click_transactions ClickTransactions[]
 
   @@map("invoices")
 }
@@ -31,4 +32,22 @@ model PaymeTransactions {
   invoice      Invoice @relation(fields: [invoiceId], references: [id])
 
   @@map("payme_transactions")
+}
+
+model ClickTransactions {
+  payment_id          String    @id @default(uuid()) @map("_id")
+  service_id          Int
+  click_trans_id      Int
+  click_paydoc_id     Int?
+  merchant_prepare_id BigInt
+  merchant_trans_id   String
+  payment_sign_time   DateTime?
+  payment_action      String?
+  payment_error       String?
+  payment_amount      Int
+  payment_process     String    @default("PREPARED")
+  invoiceId           String    @map("invoice_id")
+  invoice             Invoice   @relation(fields: [invoiceId], references: [id])
+
+  @@map("click_transactions")
 }
