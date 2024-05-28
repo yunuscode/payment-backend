@@ -14,6 +14,7 @@ indexRoute.use("/payme", paymeRouter);
 indexRoute.use("/click", clickRouter);
 
 indexRoute.use((_req, _res, next) => {
+  console.log(_req);
   next(new ApiError(httpStatus.NOT_FOUND, "Not found"));
 });
 

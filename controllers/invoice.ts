@@ -22,9 +22,18 @@ export async function getInvoiceById(request: Request, response: Response) {
     throw new ApiError(404, "Invoice not found");
   }
 
+  const merchant_id = "664cbb3b678d78006527c391";
+
+  const checkout_string = Buffer.from(
+    `m=${merchant_id};ac.order_id=${invoice.id};a=${invoice.amount * 100}`,
+  ).toString("base64");
+
+  const PAYME_URL = `https://checkout.paycom.uz/${checkout_string}`;
+
   return response.status(200).json({
     ok: true,
     data: invoice,
+    payme_url: PAYME_URL,
   });
 }
 
@@ -44,7 +53,13 @@ export async function createInvoice(request: Request, response: Response) {
     },
   });
 
-  const PAYME_URL = "https://payme.uz";
+  const merchant_id = "664cbb3b678d78006527c391";
+
+  const checkout_string = Buffer.from(
+    `m=${merchant_id};ac.order_id=${invoice.id};a=${amount * 100}`,
+  ).toString("base64");
+
+  const PAYME_URL = `https://checkout.paycom.uz/${checkout_string}`;
 
   return response.status(201).json({
     ok: true,

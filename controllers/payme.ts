@@ -4,8 +4,6 @@ import prisma from "@prisma/index";
 export async function paymeGateway(request: Request, response: Response) {
   const authorization = request.headers["authorization"];
 
-  console.log(authorization !== process.env.PAYME_HEADER, authorization);
-
   if (authorization !== process.env.PAYME_HEADER) {
     return response
       .status(200)
@@ -13,6 +11,8 @@ export async function paymeGateway(request: Request, response: Response) {
   }
 
   const method = request.body.method;
+
+  console.log(method);
 
   if (!method) {
     return response.status(400).send("BAD REQUEST");
