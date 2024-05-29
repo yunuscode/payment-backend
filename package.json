@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --require tsconfig-paths/register ./server.ts",
     "build": "tsc",
-    "start": "node ./server.js"
+    "start": "ts-node server.ts"
   },
   "keywords": [],
   "author": "",
